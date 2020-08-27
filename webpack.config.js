@@ -1,24 +1,38 @@
-const TerserPlugin = require('terser-webpack-plugin');
+// const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   optimization: {
-    minimize: true,
-    minimizer: [new TerserPlugin({
-      parallel: 2,
-    })],
+    minimize: false,
+    // minimizer: [new TerserPlugin({
+    //   parallel: 2,
+    // })],
   },
 
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: 'string-replace-loader',
-        options: {
-          search: '/!function/',
-          // eslint-disable-next-line no-script-url
-          replace: '/javascript:!function/',
+        exclude: /(node_modules)/,
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            // presets: ['@babel/preset-env'],
+            plugins: [
+              '@babel/plugin-transform-arrow-functions',
+            ],
+          },
         },
+        {
+          loader: 'string-replace-loader',
+          options: {
+            search: '(function () {',
+            // eslint-disable-next-line no-script-url
+            replace: 'blabla',
+            strict: false,
+          },
+        },
+        ],
       },
     ],
   },
