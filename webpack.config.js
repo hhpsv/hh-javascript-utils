@@ -13,12 +13,12 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: 'string-replace-loader',
-        options: {
-          search: '/!function/',
-          // eslint-disable-next-line no-script-url
-          replace: '/javascript:!function/',
-        },
+        exclude: /(node_modules)/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+        ],
       },
     ],
   },
@@ -29,7 +29,6 @@ module.exports = {
 
   entry: {
     'backoffice-copy-login': './src/backoffice-copy-login.js',
-    // test: './src/test.js',
   },
 
   output: {
