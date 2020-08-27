@@ -1,12 +1,12 @@
-// const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   optimization: {
-    minimize: false,
-    // minimizer: [new TerserPlugin({
-    //   parallel: 2,
-    // })],
+    minimize: true,
+    minimizer: [new TerserPlugin({
+      parallel: 2,
+    })],
   },
 
   module: {
@@ -14,24 +14,10 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            // presets: ['@babel/preset-env'],
-            plugins: [
-              '@babel/plugin-transform-arrow-functions',
-            ],
+        use: [
+          {
+            loader: 'babel-loader',
           },
-        },
-        {
-          loader: 'string-replace-loader',
-          options: {
-            search: '(function () {',
-            // eslint-disable-next-line no-script-url
-            replace: 'blabla',
-            strict: false,
-          },
-        },
         ],
       },
     ],
@@ -43,7 +29,6 @@ module.exports = {
 
   entry: {
     'backoffice-copy-login': './src/backoffice-copy-login.js',
-    // test: './src/test.js',
   },
 
   output: {
